@@ -1,12 +1,12 @@
 $(document).ready(function(){
-    // Thesis Modal
+    // Student Modal
     $("#myModal").modal({
         keyboard: true,
         backdrop: "static",
         show: false,
     }).on("show.bs.modal", (event) => {
         let button = $(event.relatedTarget); // button clicked
-        let studentId = button.data('student-id'); // ID of thesis taken from data-student-id
+        let studentId = button.data('student-id'); // ID of student taken from data-student-id
         let studentAction = button.data('student-action'); // action to do from data-student-action
 
         switch(studentAction) {
