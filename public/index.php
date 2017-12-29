@@ -1,27 +1,7 @@
 <?php
 
-include_once(__DIR__ . '/../app/config/config.constants.php');
-include_once(__DIR__ . '/../app/config/config.routes.php');
-include_once(__DIR__ . '/../app/lib/functions.php');
-include_once(__DIR__ . '/../app/lib/database.php');
-
-function init($routes, $dbConnection)
-{
-    $httpMethod = httpMethod();
-
-    switch ($httpMethod) {
-        case 'GET':
-            doGet($routes, $dbConnection);
-            break;
-
-        case 'POST':
-            doPost($routes, $dbConnection);
-            break;
-
-        default:
-            break;
-    }
-}
+include_once(__DIR__ . '/../src/config.php');
+include_once(__DIR__ . '/../src/functions.php');
 
 function doGet($routes, $dbConnection)
 {
@@ -37,13 +17,14 @@ function doGet($routes, $dbConnection)
     {
         $action = DEFAULT_ACTION;
     }
-
+    
     if (array_key_exists($page, $routes)) {
         $matched = false;
-        foreach($routes as $key => $value)
+        foreach($routes[$page] as $value)
         {
             if ($action === $value)
             {
+                
                 $matched = true;
                 break;                
             } 
@@ -51,7 +32,7 @@ function doGet($routes, $dbConnection)
 
         if ($matched)
         {
-            $pageFile = __DIR__ . '/../app/page/' . $page . '.php';
+            $pageFile = PAGE . $page . '.php';
             if (file_exists($pageFile))
             {
                 include_once($pageFile);
@@ -68,8 +49,67 @@ function doGet($routes, $dbConnection)
 
 function doPost($routes, $dbConnection)
 {
+    
+    $page = getParam('p');
+    $action = getParam('a');
 
+    if ($page === NULL)
+    {
+        $page = DEFAULT_PAGE;
+    }
+
+    if ($action === NULL)
+    {
+        $action = DEFAULT_ACTION;
+    }
+    
+    if (array_key_exists($page, $routes)) {
+        $matched = false;
+        foreach($routes[$page] as $value)
+        {
+            if ($action === $value)
+            {
+                
+                $matched = true;
+                break;                
+            } 
+        }
+
+        if ($matched)
+        {
+            $pageFile = PAGE . $page . '.php';
+            if (file_exists($pageFile))
+            {
+                include_once($pageFile);
+                $action($dbConnection);
+            }
+        } else {
+            echo 'Error 404<br>Page not found';
+        }
+        
+    } else {
+        echo 'Error 404<br>Page not found';
+    }
+}
+
+function init($routes, $dbConnection)
+{
+    $httpMethod = httpMethod();
+    
+    switch ($httpMethod) {
+        case 'GET':
+            doGet($routes, $dbConnection);
+            break;
+
+        case 'POST':
+            doPost($routes, $dbConnection);
+            break;
+
+        default:
+            break;
+    }
 }
 
 $dbConnection = getDbConnection();
+
 init($routes, $dbConnection);

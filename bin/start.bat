@@ -8,4 +8,4 @@ rem It is not intended to be a full-featured web server. #
 rem It should not be used on a public network. #
 rem Taken from http://php.net/manual/en/features.commandline.webserver.php #
 rem ########################################################################
-php -S 127.0.0.1:3000 -t public\ ..\bin\htaccess.php
+php -S 127.0.0.1:3000 -t ..\public\ ..\bin\htaccess.php
