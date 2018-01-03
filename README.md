@@ -24,6 +24,20 @@ Windows
 ```
 > cd procedural-php
 ```
+Login to your MySQL Server, either via CLI or any GUI tool, copy and run the contents of **proceduralphp.sql**.
+```
+CREATE SCHEMA proceduralphp;
+USE proceduralphp;
+CREATE TABLE IF NOT EXISTS student (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    last_name VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    date_of_birth DATE NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY(id)
+);
+```
 Execute:
 
 Linux
@@ -34,7 +48,6 @@ Listening on http://127.0.0.1:3000
 Document root is /home/julez/Workspace/github/procedural-php/public
 Press Ctrl-C to quit.
 ```
-This
 Windows
 ```
 $ .\bin\start.bat
